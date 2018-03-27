@@ -37,6 +37,9 @@ m = hashlib.sha256(hashed_block)
 difficulty = 2
 difficulty_string = ''.join(['0' for x in range(difficulty)])
 
+difficulty_hash = 0x00FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+difficult_decimal = 452312848583266388373324160190187140051835877600158453279131187530910662655
+
 
 # Set Miners involved and their respective CPU's
 
@@ -60,6 +63,9 @@ while m.hexdigest()[:difficulty] != difficulty_string:
     m = hashlib.sha256(pickle.dumps(block)) # Convert data to byte form so it can be hashed
     print('Nonce Guess: ' + str(block['nonce']))
     print('Resultant Hash: ' + str(m.hexdigest()))
+    print('Decimal value of hash: ' + str(int(m.hexdigest(), 16)))
+    if int(m.hexdigest(), 16) < difficulty_hash:
+        print('Valid Hash: ' + str(int(m.hexdigest(), 16)) + ' is less than ' + str(difficulty_hash))
     miner = miners[block['nonce'] % len(miners)] # The miner who mined the block
     blockheader = m.hexdigest() # The hash of the block and nonce which will be the blockheader for that block
 
